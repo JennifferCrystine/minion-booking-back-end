@@ -35,6 +35,8 @@ provider:
         - dynamodb:DeleteItem
       Resource: "arn:aws:dynamodb:us-east-1:*:*"
 
+  
+
 functions:
 
  
@@ -90,5 +92,22 @@ functions:
           cors: true
           authorizer: aws_iam
 
+  delete:
+    # Defines an HTTP API endpoint that calls the main function in delete.js
+    # - path: url path is /minions/{id}
+    # - method: DELETE request
+    handler: delete.main
+    events:
+      - http:
+          path: minions/{id}
+          method: delete
+          cors: true
+          authorizer: aws_iam
+
+
+  # Create our resources with separate CloudFormation templates
+  resources:
+    # API Gateway Errors
+    - ${file(resources/api-gateway-errors.yml)}
   
   
